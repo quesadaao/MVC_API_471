@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interfases\ICRUD.cs" />
+    <Compile Include="Objects\Customers.cs" />
     <Compile Include="Objects\Employees.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

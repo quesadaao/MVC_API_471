@@ -16,12 +16,14 @@ namespace Solution.Maps
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<ent.Employees, data.Employees>();
-
-
                 cfg.CreateMap<data.Employees, ent.Employees>();
+
+                cfg.CreateMap<ent.Customers, data.Customers>();
+                cfg.CreateMap<data.Customers, ent.Customers>();
 
             });
 
         }
+
     }
 }

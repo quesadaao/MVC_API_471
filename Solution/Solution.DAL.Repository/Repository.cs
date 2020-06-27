@@ -24,15 +24,18 @@ namespace Solution.DAL.Repository
         public void Commit()
         {
             dbContext.SaveChanges();
+            dbContext.Dispose();
         }
 
         public void Delete(T entity)
         {
-            if (dbContext.Entry<T>(entity).State == EntityState.Detached)
-            {
-                dbContext.Set<T>().Add(entity);
-            }
+            //if (dbContext.Entry<T>(entity).State == EntityState.Detached)
+            //{
+            //    dbContext.Set<T>().Add(entity);
+            //}
             dbContext.Entry<T>(entity).State = EntityState.Deleted;
+
+
         }
 
         public IEnumerable<T> GetAll()

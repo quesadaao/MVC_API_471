@@ -10,6 +10,7 @@ namespace Solution.API
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
+            Solution.Maps.Maps.CreateMaps();
 
             // Web API routes
             config.MapHttpAttributeRoutes();
