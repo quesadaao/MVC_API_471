@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -27,15 +28,69 @@ namespace Solution.DAL.Repository
             dbContext.Dispose();
         }
 
+        //public void Delete1(T entity)
+        //{
+        //    try
+        //    {
+        //        //if (dbContext.Entry<T>(entity).State == EntityState.Detached)
+        //        //{
+        //        //    dbContext.Set<T>().Add(entity);
+        //        //}
+        //        //dbContext.Entry<T>(entity).State = EntityState.Deleted;
+
+        //        if (entity == null)
+        //        {
+        //            throw new ArgumentNullException("entity");
+        //        }
+
+        //        dbContext.Set<T>().Remove(entity);
+        //    }
+        //    catch (Exception ee)
+        //    {
+        //        dbContext.Dispose();
+        //        throw;
+        //    }
+            
+
+        //}
+
         public void Delete(T entity)
         {
-            //if (dbContext.Entry<T>(entity).State == EntityState.Detached)
-            //{
-            //    dbContext.Set<T>().Add(entity);
-            //}
-            dbContext.Entry<T>(entity).State = EntityState.Deleted;
+            try
+            {
+                DbEntityEntry dbEntityEntry = dbContext.Entry(entity);
+                DbSet<T> DbSet = dbContext.Set<T>();
+                if (dbEntityEntry.State != EntityState.Deleted)
+                {
+                    dbEntityEntry.State = EntityState.Deleted;
+                }
+                else
+                {
+                    DbSet.Attach(entity);
+                    DbSet.Remove(entity);
+                }
+            }
+            catch (Exception ee)
+            {
+                dbContext.Dispose();
+                throw;
+            }
+            
+        }
 
-
+        public void Delete(int id)
+        {
+            try
+            {
+                var entity = GetOneByID(id);
+                if (entity == null) return; // not found; assume already deleted.
+                Delete(entity);
+            }
+            catch (Exception ee)
+            {
+                dbContext.Dispose();
+                throw;
+            }            
         }
 
         public IEnumerable<T> GetAll()
@@ -55,13 +110,23 @@ namespace Solution.DAL.Repository
 
         public void Insert(T entity)
         {
-            if (dbContext.Entry<T>(entity).State == EntityState.Detached)
+            
+            try
             {
-                dbContext.Entry<T>(entity).State = EntityState.Added;
+                if (dbContext.Entry<T>(entity).State == EntityState.Detached)
+                {
+                    dbContext.Entry<T>(entity).State = EntityState.Added;
+                }
+                else
+                {
+                    dbContext.Set<T>().Add(entity);
+                }
+
             }
-            else
+            catch (Exception)
             {
-                dbContext.Set<T>().Add(entity);
+                dbContext.Dispose();
+                throw;
             }
         }
 
@@ -72,11 +137,20 @@ namespace Solution.DAL.Repository
 
         public void Updated(T entity)
         {
-            if (dbContext.Entry<T>(entity).State == EntityState.Detached)
+            try
             {
-                dbContext.Set<T>().Attach(entity);
+                if (dbContext.Entry<T>(entity).State == EntityState.Detached)
+                {
+                    dbContext.Set<T>().Attach(entity);
+                }
+                dbContext.Entry<T>(entity).State = EntityState.Modified;
             }
-            dbContext.Entry<T>(entity).State = EntityState.Modified;
+            catch (Exception)
+            {
+                dbContext.Dispose();
+                throw;
+            }
+            
         }
     }
 }

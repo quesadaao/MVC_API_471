@@ -10,16 +10,21 @@ using System.Web.Http.Description;
 
 namespace Solution.API.Controllers
 {
+    [Route("api/Employees")]
     public class EmployeesController : ApiController
     {
         private BS.Employees bs = new BS.Employees();
         // GET: api/Employees
+        [Route("api/Employees/GetEmployees/")]
+        [HttpGet]
         public IQueryable<Employees> GetEmployees()
         {
             //return db.Employees;
             return bs.GetAll().AsQueryable();
         }
 
+        [Route("api/Employees/GetEmployees/5")]
+        [HttpGet]
         // GET: api/Employees/5
         [ResponseType(typeof(Employees))]
         public async Task<IHttpActionResult> GetEmployees(int id)

@@ -21,7 +21,7 @@ namespace Solution.DAL
                 //t.PhotoPath = true.ToString();
                 //_repository.Updated(t);
 
-                _repository.Delete(t);
+                _repository.Delete(t.EmployeeID);
                 _repository.Commit();
             }
             catch (Exception ee)

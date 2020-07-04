@@ -1,7 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Solution.UI.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -9,13 +14,63 @@ namespace Solution.UI.Controllers
 {
     public class EmployeesController : Controller
     {
-        //private Northwind2Entities db = new Northwind2Entities();
+        string baseurl = "http://localhost:44322/";
 
         // GET: Employees
-        public ActionResult Index()
+        public ActionResult IndexAsync34444353()
         {
             //return View(db.Employees.ToList());
-            return null;
+            List<Employees> aux = new List<Employees>();
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseurl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                //HttpResponseMessage res = client.GetAsync("api/Employees");
+
+                var result = client.GetAsync("api/Employees/GetEmployees");
+                result.Wait();
+                var res = result.Result;
+                if (res.IsSuccessStatusCode)
+                {
+                    var auxRes = res.Content.ReadAsStringAsync().Result;
+
+                    aux = JsonConvert.DeserializeObject<List<Employees>>(auxRes);
+                }
+            }
+            return View(aux);
+            //return null;
+        }
+
+        public ActionResult IndexAsync()
+        {
+            IEnumerable<Employees> students = null;
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:44322/");
+                //HTTP GET
+                var responseTask = client.GetAsync("api/Employees/GetEmployees");
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    //var readTask = result.Content.ReadAsAsync<IList<Employees>>();
+                    //readTask.Wait();
+
+                    //students = readTask.Result;
+                }
+                else //web api sent error response 
+                {
+                    //log response status here..
+
+                    students = Enumerable.Empty<Employees>();
+
+                    ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
+                }
+            }
+            return View(students);
         }
 
         // GET: Employees/Details/5
