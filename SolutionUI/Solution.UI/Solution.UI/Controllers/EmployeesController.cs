@@ -42,7 +42,7 @@ namespace Solution.UI.Controllers
             //return null;
         }
 
-        public ActionResult IndexAsync()
+        public ActionResult IndexAsync222()
         {
             IEnumerable<Employees> students = null;
 
@@ -71,6 +71,37 @@ namespace Solution.UI.Controllers
                 }
             }
             return View(students);
+        }
+
+        public ActionResult IndexAsync() {
+            IEnumerable<Employees> students = null;
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44322/api/");
+                //HTTP GET
+                var responseTask = client.GetAsync("Employees");
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    //var readTask = result.Content.ReadAsAsync<IList<Employees>>();
+                    //readTask.Wait();
+
+                    //students = readTask.Result;
+                }
+                else //web api sent error response 
+                {
+                    //log response status here..
+
+                    students = Enumerable.Empty<Employees>();
+
+                    ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
+                }
+            }
+            return View(students);
+ 
         }
 
         // GET: Employees/Details/5

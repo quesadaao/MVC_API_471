@@ -168,6 +168,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\EmployeesAsyncController.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -238,6 +239,11 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Employees\IndexAsync.cshtml" />
+    <Content Include="Views\EmployeesAsync\Index.cshtml" />
+    <Content Include="Views\EmployeesAsync\Delete.cshtml" />
+    <Content Include="Views\EmployeesAsync\Details.cshtml" />
+    <Content Include="Views\EmployeesAsync\Edit.cshtml" />
+    <Content Include="Views\EmployeesAsync\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
