@@ -1,30 +1,32 @@
-﻿using Solution.DO.Objects;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Solution.API.W.Models;
 
-namespace Solution.API.Controllers
+namespace Solution.API.W.Controllers
 {
-    [Route("api/Employees")]
     public class EmployeesController : ApiController
     {
-        private BS.Employees bs = new BS.Employees();
+        private Northwind2Entities1 db = new Northwind2Entities1();
+
         // GET: api/Employees
         public IQueryable<Employees> GetEmployees()
         {
-            return bs.GetAll().AsQueryable();
+            return db.Employees;
         }
 
         // GET: api/Employees/5
         [ResponseType(typeof(Employees))]
         public IHttpActionResult GetEmployees(int id)
         {
-            Employees employees =  bs.GetOneById(id);
+            Employees employees = db.Employees.Find(id);
             if (employees == null)
             {
                 return NotFound();
@@ -37,17 +39,23 @@ namespace Solution.API.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult PutEmployees(int id, Employees employees)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             if (id != employees.EmployeeID)
             {
                 return BadRequest();
             }
 
+            db.Entry(employees).State = EntityState.Modified;
+
             try
             {
-                bs.Updated(employees);
-
+                db.SaveChanges();
             }
-            catch (Exception ee)
+            catch (DbUpdateConcurrencyException)
             {
                 if (!EmployeesExists(id))
                 {
@@ -71,27 +79,40 @@ namespace Solution.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            bs.Insert(employees);
-            Employees newEmp = bs.SearchByFirstName(employees.FirstName).LastOrDefault();
-            return CreatedAtRoute("DefaultApi", new { id = newEmp.EmployeeID }, newEmp);
+            db.Employees.Add(employees);
+            db.SaveChanges();
+
+            return CreatedAtRoute("DefaultApi", new { id = employees.EmployeeID }, employees);
         }
 
         // DELETE: api/Employees/5
         [ResponseType(typeof(Employees))]
         public IHttpActionResult DeleteEmployees(int id)
         {
-            Employees employees = bs.GetOneById(id);
+            Employees employees = db.Employees.Find(id);
             if (employees == null)
             {
                 return NotFound();
             }
-            bs.Delete(employees);
+
+            db.Employees.Remove(employees);
+            db.SaveChanges();
+
             return Ok(employees);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
         private bool EmployeesExists(int id)
         {
-            return bs.GetOneById(id)!=null ? true:false;
+            return db.Employees.Count(e => e.EmployeeID == id) > 0;
         }
     }
 }

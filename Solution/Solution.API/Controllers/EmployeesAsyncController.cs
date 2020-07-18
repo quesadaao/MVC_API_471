@@ -10,21 +10,20 @@ using System.Web.Http.Description;
 
 namespace Solution.API.Controllers
 {
-    [Route("api/Employees")]
-    public class EmployeesController : ApiController
+    public class EmployeesAsyncController : ApiController
     {
         private BS.Employees bs = new BS.Employees();
-        // GET: api/Employees
+        // GET: api/EmployeesAsync
         public IQueryable<Employees> GetEmployees()
         {
             return bs.GetAll().AsQueryable();
         }
 
-        // GET: api/Employees/5
+        // GET: api/EmployeesAsync/5
         [ResponseType(typeof(Employees))]
-        public IHttpActionResult GetEmployees(int id)
+        public async Task<IHttpActionResult> GetEmployees(int id)
         {
-            Employees employees =  bs.GetOneById(id);
+            Employees employees = bs.GetOneById(id);
             if (employees == null)
             {
                 return NotFound();
@@ -33,9 +32,9 @@ namespace Solution.API.Controllers
             return Ok(employees);
         }
 
-        // PUT: api/Employees/5
+        // PUT: api/EmployeesAsync/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutEmployees(int id, Employees employees)
+        public async Task<IHttpActionResult> PutEmployees(int id, Employees employees)
         {
             if (id != employees.EmployeeID)
             {
@@ -62,9 +61,9 @@ namespace Solution.API.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Employees
+        // POST: api/EmployeesAsync
         [ResponseType(typeof(Employees))]
-        public IHttpActionResult PostEmployees(Employees employees)
+        public async Task<IHttpActionResult> PostEmployees(Employees employees)
         {
             if (!ModelState.IsValid)
             {
@@ -76,9 +75,9 @@ namespace Solution.API.Controllers
             return CreatedAtRoute("DefaultApi", new { id = newEmp.EmployeeID }, newEmp);
         }
 
-        // DELETE: api/Employees/5
+        // DELETE: api/EmployeesAsync/5
         [ResponseType(typeof(Employees))]
-        public IHttpActionResult DeleteEmployees(int id)
+        public async Task<IHttpActionResult> DeleteEmployees(int id)
         {
             Employees employees = bs.GetOneById(id);
             if (employees == null)
@@ -91,7 +90,7 @@ namespace Solution.API.Controllers
 
         private bool EmployeesExists(int id)
         {
-            return bs.GetOneById(id)!=null ? true:false;
+            return bs.GetOneById(id) != null ? true : false;
         }
     }
 }

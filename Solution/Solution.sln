@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Solution.DO", "Solution.DO\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Solution.Maps", "Solution.Maps\Solution.Maps.csproj", "{FF76AF9F-6EC0-4515-A144-9C41701ED482}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Solution.API.W", "Solution.API.W\Solution.API.W.csproj", "{D8C3ECC2-86A9-4BAF-9713-7C86407058F2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{FF76AF9F-6EC0-4515-A144-9C41701ED482}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF76AF9F-6EC0-4515-A144-9C41701ED482}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF76AF9F-6EC0-4515-A144-9C41701ED482}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8C3ECC2-86A9-4BAF-9713-7C86407058F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8C3ECC2-86A9-4BAF-9713-7C86407058F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8C3ECC2-86A9-4BAF-9713-7C86407058F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8C3ECC2-86A9-4BAF-9713-7C86407058F2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -44,7 +44,7 @@ namespace Solution.BS
 
         public IEnumerable<ent.Employees> SearchByFirstName(string FirstName)
         {
-            var t = _dal.SearchByFirstName(FirstName);
+            IEnumerable<data.Employees> t = _dal.SearchByFirstName(FirstName);
             var _ent = Mapper.Map<IEnumerable<data.Employees>, IEnumerable<ent.Employees>>(t);
             return _ent;
         }

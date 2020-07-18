@@ -10,21 +10,24 @@ using System.Web.Http.Description;
 
 namespace Solution.API.Controllers
 {
-    [Route("api/Employees")]
-    public class EmployeesController : ApiController
+    [Route("api/EmployeesRoutes")]
+    public class EmployeesRoutesController : ApiController
     {
         private BS.Employees bs = new BS.Employees();
-        // GET: api/Employees
+
+        [Route("api/EmployeesRoutes/Employees")]
+        // GET: api/EmployeesRoutes
         public IQueryable<Employees> GetEmployees()
         {
             return bs.GetAll().AsQueryable();
         }
 
-        // GET: api/Employees/5
+        [Route("api/EmployeesRoutes/5")]
+        // GET: api/EmployeesRoutes/5
         [ResponseType(typeof(Employees))]
         public IHttpActionResult GetEmployees(int id)
         {
-            Employees employees =  bs.GetOneById(id);
+            Employees employees = bs.GetOneById(id);
             if (employees == null)
             {
                 return NotFound();
@@ -33,7 +36,8 @@ namespace Solution.API.Controllers
             return Ok(employees);
         }
 
-        // PUT: api/Employees/5
+        [Route("api/EmployeesRoutes/5")]
+        // PUT: api/EmployeesRoutes/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutEmployees(int id, Employees employees)
         {
@@ -62,7 +66,8 @@ namespace Solution.API.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Employees
+        [Route("api/EmployeesRoutes")]
+        // POST: api/EmployeesRoutes
         [ResponseType(typeof(Employees))]
         public IHttpActionResult PostEmployees(Employees employees)
         {
@@ -76,7 +81,8 @@ namespace Solution.API.Controllers
             return CreatedAtRoute("DefaultApi", new { id = newEmp.EmployeeID }, newEmp);
         }
 
-        // DELETE: api/Employees/5
+        [Route("api/EmployeesRoutes/5")]
+        // DELETE: api/EmployeesRoutes/5
         [ResponseType(typeof(Employees))]
         public IHttpActionResult DeleteEmployees(int id)
         {
@@ -91,7 +97,7 @@ namespace Solution.API.Controllers
 
         private bool EmployeesExists(int id)
         {
-            return bs.GetOneById(id)!=null ? true:false;
+            return bs.GetOneById(id) != null ? true : false;
         }
     }
 }

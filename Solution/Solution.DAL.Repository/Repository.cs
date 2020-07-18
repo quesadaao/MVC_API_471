@@ -25,34 +25,7 @@ namespace Solution.DAL.Repository
         public void Commit()
         {
             dbContext.SaveChanges();
-            dbContext.Dispose();
         }
-
-        //public void Delete1(T entity)
-        //{
-        //    try
-        //    {
-        //        //if (dbContext.Entry<T>(entity).State == EntityState.Detached)
-        //        //{
-        //        //    dbContext.Set<T>().Add(entity);
-        //        //}
-        //        //dbContext.Entry<T>(entity).State = EntityState.Deleted;
-
-        //        if (entity == null)
-        //        {
-        //            throw new ArgumentNullException("entity");
-        //        }
-
-        //        dbContext.Set<T>().Remove(entity);
-        //    }
-        //    catch (Exception ee)
-        //    {
-        //        dbContext.Dispose();
-        //        throw;
-        //    }
-            
-
-        //}
 
         public void Delete(T entity)
         {
